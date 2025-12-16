@@ -433,7 +433,7 @@ const CourseDetail = () => {
             <div className="rounded-xl overflow-hidden">
               <div className="aspect-video">
                 <img
-                  src={`http://localhost:5000/uploads/${course.thumbnail}`}
+                  src={`https://apicourse.manovaidya.com/uploads/${course.thumbnail}`}
                   alt={course.title || "Course Thumbnail"}
                   className="w-full h-full object-fit"
                 />
@@ -569,7 +569,7 @@ const CourseDetail = () => {
                   <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200">
                     {courseDetails.instructor.photoPath ? (
                       <img
-                        src={`http://localhost:5000/uploads/${courseDetails?.instructor?.photoPath}`}
+                        src={`https://apicourse.manovaidya.com/uploads/${courseDetails?.instructor?.photoPath}`}
 
                         className="w-full h-full object-cover"
                         alt="Instructor"

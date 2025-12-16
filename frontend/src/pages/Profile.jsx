@@ -30,7 +30,7 @@ const Profile = () => {
         if (!token) return;
 
         axios
-            .get("http://localhost:5000/api/auth/me", {
+            .get("https://apicourse.manovaidya.com/api/auth/me", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

@@ -20,9 +20,9 @@ dist-ssr
 # --------------------
 # Environment files
 # --------------------
-.env
+backend/.env
 .env.*           # ignores all environment variants like .env.development, .env.production
-
+.env
 # --------------------
 # Editor directories and files
 # --------------------

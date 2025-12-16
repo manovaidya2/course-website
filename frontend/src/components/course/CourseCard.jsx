@@ -136,7 +136,7 @@ const CourseCard = ({
     {/* Thumbnail */}
     <div className="relative h-[200px] overflow-hidden bg-gray-100">
         <img
-            src={thumbnail ? `http://localhost:5000/uploads/${thumbnail}` : DefaultThumb}
+            src={thumbnail ? `https://apicourse.manovaidya.com/uploads/${thumbnail}` : DefaultThumb}
             alt={title}
             className="w-full h-full object-cover group-hover:scale-105 transition"
         />

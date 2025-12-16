@@ -169,7 +169,7 @@ const CoursePlayer = () => {
                   <div className="flex items-center gap-3 w-full">
                     {lesson.thumbnail ? (
                       <img
-                        src={`http://localhost:5000/uploads/${lesson.thumbnail}`}
+                        src={`https://apicourse.manovaidya.com/uploads/${lesson.thumbnail}`}
                         className="w-14 h-10 object-cover rounded-md shadow-sm flex-shrink-0"
                         alt=""
                       />
