@@ -1,2 +1,1 @@
-# Inside .gitignore
-backend/.env
+/.env

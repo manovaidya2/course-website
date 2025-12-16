@@ -26,7 +26,7 @@ const Navigation = () => {
         { label: "My Journey", path: "/my-journey", icon: <FiTrendingUp size={16} /> },
         { label: "Community", path: "/community", icon: <FiUsers size={16} /> },
         { label: "About Doctors", path: "/about-doctor", icon: <FiInfo size={16} /> },
-           { label: "About Doctors", path: "/courses/:courseId/lesson/:lessonId", icon: <FiInfo size={16} /> },
+          //  { label: "About Doctors", path: "/courses/:courseId/lesson/:lessonId", icon: <FiInfo size={16} /> },
       ]
     : [
         { label: "Home", path: "/", icon: <FiHome size={16} /> },
