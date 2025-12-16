@@ -169,7 +169,7 @@ const AdminCourses = () => {
             {/* Thumbnail */}
             {selectedCourse.thumbnail && (
               <img
-                src={`http://localhost:5000/uploads/${selectedCourse.thumbnail}`}
+                src={`https://apicourse.manovaidya.com/uploads/${selectedCourse.thumbnail}`}
                 className="w-full h-56 object-cover rounded-lg mb-4"
               />
             )}

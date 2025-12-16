@@ -201,7 +201,7 @@
 
             {course.thumbnail && (
               <img
-                src={`http://localhost:5000/uploads/${course.thumbnail}`}
+                src={`https://apicourse.manovaidya.com/uploads/${course.thumbnail}`}
                 className="w-40 mt-3 rounded-xl shadow"
               />
             )}
@@ -411,7 +411,7 @@
 
                   {lesson.thumbnail && (
                     <img
-                      src={`http://localhost:5000/uploads/${lesson.thumbnail}`}
+                      src={`https://apicourse.manovaidya.com/uploads/${lesson.thumbnail}`}
                       className="w-32 mt-2 rounded-xl border"
                     />
                   )}
