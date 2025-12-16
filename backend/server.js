@@ -15,7 +15,7 @@ const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map(o => o.trim())
   : ["http://localhost:5173", "http://localhost:5174"
     ,"https://apicourse.manovaidya.com", "https://course.manovaidya.com",
-    "http://admincourse.manovaidya.com", "https://www.course.manovaidya.com"
+    "https://admincourse.manovaidya.com", "https://www.course.manovaidya.com"
   ];
 
 app.use(cors({ origin: (origin, cb) => !origin || allowedOrigins.includes(origin) ? cb(null, true) : cb(new Error("Not allowed by CORS")), credentials: true }));
