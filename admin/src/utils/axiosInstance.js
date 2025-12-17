@@ -26,12 +26,10 @@
 // export default axiosInstance;
 
 
-
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  // baseURL: "http://localhost:5000/api", // ✔ apna backend URL
-   baseURL: "https://apicourse.manovaidya.com/api", // ✔ apna backend URL
+  baseURL: "https://apicourse.manovaidya.com/api", // ✔ apna backend URL
 });
 
 // 🔥 ALWAYS attach token
@@ -51,14 +49,11 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-// 🔥 Auto logout if token invalid
+// 🔥 Response interceptor (without auto logout)
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    }
+    // Removed automatic logout on 401
     return Promise.reject(error);
   }
 );
