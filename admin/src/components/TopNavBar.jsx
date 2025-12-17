@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const TopNavBar = ({ activeTab, handleLogout, onMenuToggle, isSidebarOpen }) => {
-  const adminAuth = JSON.parse(localStorage.getItem("adminAuth"));
+  const adminAuth = localStorage.getItem("token");
   const [showSearch, setShowSearch] = useState(false);
 
   return (
@@ -80,7 +80,11 @@ const TopNavBar = ({ activeTab, handleLogout, onMenuToggle, isSidebarOpen }) => 
 
           {/* Logout - Desktop Text + Icon */}
           <button
-            onClick={handleLogout}
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("userId");
+              navigate("/login");
+            }}
             className="hidden md:flex items-center space-x-2 px-3 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors"
             title="Logout"
           >

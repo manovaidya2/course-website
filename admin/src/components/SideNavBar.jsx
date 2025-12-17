@@ -23,7 +23,8 @@ const SideNavBar = ({ activeTab, setActiveTab }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("adminAuth");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     navigate("/login");
   };
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../utils/axiosInstance"; // ✅ cookie-enabled axios
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -24,23 +25,21 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Mock admin authentication - replace with actual API call
-      if (formData.email === "admin@123" && formData.password === "admin123") {
-        localStorage.setItem("adminAuth", JSON.stringify({
-          token: "mock-admin-token",
-          user: {
-            email: formData.email,
-            role: "admin",
-            name: "Admin User"
-          }
-        }));
-        
-        navigate("/admin/dashboard");
-      } else {
-        setError("Invalid email or password");
-      }
+      // ✅ REAL ADMIN LOGIN API
+     const res= await axios.post("/auth/login", {
+        identifier: formData.email,
+        password: formData.password,
+      });
+      localStorage.setItem("userId", res.data.user.id);
+      localStorage.setItem("token", res.data.token);
+
+
+      // ✅ JWT cookie backend set karega
+      navigate("/admin/dashboard");
     } catch (err) {
-      setError("Login failed. Please try again.");
+      setError(
+        err.response?.data?.message || "Invalid email or password"
+      );
     } finally {
       setLoading(false);
     }
@@ -65,54 +64,52 @@ const Login = () => {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email Field */}
+            {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email
               </label>
               <input
-                id="email"
                 name="email"
                 type="email"
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your email"
               />
             </div>
 
-            {/* Password Field */}
+            {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
               <input
-                id="password"
                 name="password"
                 type="password"
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
               />
             </div>
 
-            {/* Error Message */}
+            {/* Error */}
             {error && (
               <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
 
-            {/* Submit Button */}
+            {/* Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 disabled:bg-gray-400"
             >
-              {loading ? "Loging..." : "Login In"}
+              {loading ? "Logging..." : "Login"}
             </button>
           </form>
         </div>
