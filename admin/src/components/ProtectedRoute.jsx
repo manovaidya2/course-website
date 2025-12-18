@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-const ADMIN_ID = "693970f820a140853f8af66f";
+const ADMIN_ID = "6943c51ce254b70220305761";
 
 const ProtectedRoute = ({ children }) => {
   const userId = localStorage.getItem("userId");
