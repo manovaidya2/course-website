@@ -23,9 +23,10 @@ const Navigation = () => {
     ? [
         { label: "Home", path: "/", icon: <FiHome size={16} /> },
         { label: "Courses", path: "/courses", icon: <FiBook size={16} /> },
-        { label: "My Journey", path: "/my-journey", icon: <FiTrendingUp size={16} /> },
+        // { label: "My Journey", path: "/my-journey", icon: <FiTrendingUp size={16} /> },
         { label: "Community", path: "/community", icon: <FiUsers size={16} /> },
         { label: "About Doctors", path: "/about-doctor", icon: <FiInfo size={16} /> },
+        { label: "Free Resources", path: "/resources", icon: <FiBook size={16} /> },
           //  { label: "About Doctors", path: "/courses/:courseId/lesson/:lessonId", icon: <FiInfo size={16} /> },
       ]
     : [
