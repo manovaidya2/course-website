@@ -116,7 +116,7 @@ const Login = () => {
 
         {/* Footer */}
         <p className="text-center text-blue-200 text-sm mt-6">
-          © 2025 Aurevik Capital. All rights reserved.
+          © 2025 Manovaidya. All rights reserved.
         </p>
       </div>
     </div>

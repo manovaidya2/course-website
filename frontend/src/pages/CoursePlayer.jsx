@@ -240,7 +240,7 @@ const CoursePlayer = () => {
                   onClick={() => setShowThumbnail(false)}
                 >
                   <img
-                    src={`http://localhost:5000/uploads/${currentLesson.thumbnail}`}
+                    src={`https://apicourse.manovaidya.com/uploads/${currentLesson.thumbnail}`}
                     className="w-full h-full object-cover"
                     alt="Thumbnail"
                   />
