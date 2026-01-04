@@ -190,20 +190,24 @@ const Courses = () => {
             <main className="flex-1">
 
                 {/* 🔵 Hero Section */}
-                <section className="bg-gray-100 py-16">
-                    <div className="container mx-auto px-4 text-center max-w-3xl">
-                        <h1 className="text-5xl font-bold mb-4">Courses for Parents</h1>
-                        <p className="text-xl text-gray-600">
-                            Learn at your own pace with structured guidance
-                        </p>
-                    </div>
+                <section className="bg-gray-100 py-5">
+                   <div className="container mx-auto px-4 text-center max-w-3xl">
+  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+    Courses for Parents
+  </h1>
+  <p className="text-base sm:text-lg md:text-xl text-gray-600">
+    Learn at your own pace with structured guidance
+  </p>
+</div>
+
                 </section>
 
                 {/* 🔵 Filters Section */}
-                <section className="py-8 border-b sticky top-16 bg-white z-40">
+                <section className="py-8 border-b sticky top-11 bg-white z-40">
                     <div className="w-[90%] mx-auto px-4 flex flex-col md:flex-row gap-4 items-center justify-between">
 
-                        <div className="flex flex-col sm:flex-row gap-4 w-full">
+                      <div className="flex flex-row gap-3 w-full overflow-x-auto">
+
 
                             {/* Category Filter (Dynamic) */}
                             <select
