@@ -1,70 +1,43 @@
-// src/routes/courseRoutes.js
-
 import express from "express";
 import {
   createCourse,
   getCourses,
   getCourseById,
-  updateCourse,
   deleteCourse,
+  getCoursesByDiseaseId,
+  getCoursesForUser ,
 } from "../controllers/courseController.js";
 
+import { protect } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/upload.js";
 
 const router = express.Router();
 
-/**
- * ----------------------------------------
- * CREATE COURSE
- * POST /api/courses
- * ----------------------------------------
- */
+/* CREATE COURSE */
 router.post(
   "/",
   upload.fields([
     { name: "thumbnail", maxCount: 1 },
-    { name: "lessonThumbnails", maxCount: 50 },
+    { name: "lessonThumbnails", maxCount: 100 },
   ]),
   createCourse
 );
 
-/**
- * ----------------------------------------
- * GET ALL COURSES
- * GET /api/courses
- * ----------------------------------------
- */
+/* CATEGORY WISE (KEEP FIRST) */
+router.get("/category-id/:diseaseId", getCoursesByDiseaseId);
+
+/* GET ALL */
 router.get("/", getCourses);
 
-/**
- * ----------------------------------------
- * GET SINGLE COURSE
- * GET /api/courses/:id
- * ----------------------------------------
- */
+/* GET ONE */
 router.get("/:id", getCourseById);
 
-/**
- * ----------------------------------------
- * UPDATE COURSE
- * PUT /api/courses/:id
- * ----------------------------------------
- */
-router.put(
-  "/:id",
-  upload.fields([
-    { name: "thumbnail", maxCount: 1 },
-    { name: "lessonThumbnails", maxCount: 50 },
-  ]),
-  updateCourse
-);
-
-/**
- * ----------------------------------------
- * DELETE COURSE
- * DELETE /api/courses/:id
- * ----------------------------------------
- */
+/* DELETE */
 router.delete("/:id", deleteCourse);
 
+router.get(
+  "/category/:diseaseId/user",
+  protect,
+  getCoursesForUser
+);
 export default router;

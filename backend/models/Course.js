@@ -1,37 +1,49 @@
 import mongoose from "mongoose";
 
-const pointSchema = new mongoose.Schema({
-  text: { type: String, required: true },
-});
-
 const lessonSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: String,
   type: { type: String, enum: ["Video", "Quiz"], default: "Video" },
-  duration: { type: String },
-  thumbnail: { type: String }, 
-  youtubeUrl: { type: String }, // store full iframe src URL or normal URL
+  duration: String,
+  thumbnail: String,
+  youtubeUrl: String,
   points: [String],
 });
 
 const moduleSchema = new mongoose.Schema({
-  title: { type: String, required: true },
+  title: String,
   lessons: [lessonSchema],
-  isLocked: { type: Boolean, default: true },
 });
 
 const courseSchema = new mongoose.Schema(
   {
-    moduleName: { type: String, required: true },
-    disease: { type: String },
-    type: { type: String, enum: ["Intro", "Deep-dive", "Protocols"] },
-    access: { type: String, enum: ["Free", "Paid","Locked"] },
-    courseTitle: { type: String, required: true },
-    courseDescription: { type: String },
-    totalModules: { type: Number },
-    totalTime: { type: String },
+    moduleName: String,
+
+    disease: {
+      type: String,
+      enum: ["Autism & ADHD", "Teenage", "Adults"],
+      required: true,
+    },
+
+    diseaseId: {
+      type: String,
+      enum: ["autism-adhd", "teenage", "adults"],
+      required: true,
+      index: true,
+    },
+
+    type: String,
+    access: String,
+
+    courseTitle: String,
+    courseDescription: String,
+
+    totalModules: Number,
+    totalTime: String,
+
     youWillLearn: [String],
-    bottomFieldText: { type: String },
-    thumbnail: { type: String }, // Course thumbnail filename
+    bottomFieldText: String,
+
+    thumbnail: String,
     modules: [moduleSchema],
   },
   { timestamps: true }

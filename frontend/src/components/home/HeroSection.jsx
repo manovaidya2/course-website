@@ -66,26 +66,33 @@ const HeroSection = () => {
               </div>
 
               {/* Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Link to="/courses" className="w-full sm:w-auto">
-                  <button
-                    className="w-full px-6 py-3 bg-purple-600 text-white font-medium rounded-lg flex items-center justify-center hover:bg-purple-700 transition"
-                    type="button"
-                  >
-                    Start Free Parent Clarity Course
-                    <FiArrowRight className="ml-2 w-5 h-5" />
-                  </button>
-                </Link>
+              {/* Buttons */}
+<div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative">
+  {/* Start Free Parent Clarity Course */}
+  <Link to="/courses" className="w-full sm:w-auto">
+    <span className="w-full block">
+      <button
+        className="w-full px-6 py-3 bg-purple-600 text-white font-medium rounded-lg flex items-center justify-center hover:bg-purple-700 transition"
+        type="button"
+      >
+        Start Parent Clarity Course
+        <FiArrowRight className="ml-2 w-5 h-5" />
+      </button>
+    </span>
+  </Link>
 
-                <Link to="/courses" className="w-full sm:w-auto">
-                  <button
-                    className="w-full px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-100 transition"
-                    type="button"
-                  >
-                    Explore All Courses
-                  </button>
-                </Link>
-              </div>
+  {/* Explore All Courses */}
+  <Link to="/courses" className="w-full sm:w-auto">
+    <span className="w-full block">
+      <button
+        className="w-full px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-100 transition"
+        type="button"
+      >
+        Explore All Courses
+      </button>
+    </span>
+  </Link>
+</div>
 
             </div>
 

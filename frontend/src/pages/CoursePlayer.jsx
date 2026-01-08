@@ -4,6 +4,7 @@ import axiosInstance from "../utils/axiosInstance";
 import ReactPlayer from "react-player";
 import { FiCheckCircle, FiMenu, FiX } from "react-icons/fi";
 import LessonSectionUI from "./LessonSectionUI";
+import Courses from "./Courses";
 
 const CoursePlayer = () => {
   const { slug, lessonId } = useParams();
@@ -307,6 +308,7 @@ const CoursePlayer = () => {
         )}
 
 <LessonSectionUI moduleId={currentLesson?.moduleId} />
+
 
       </div>
     </div>

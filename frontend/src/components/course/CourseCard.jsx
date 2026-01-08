@@ -147,7 +147,7 @@ const CourseCard = ({
                             isFree ? "bg-green-500" : "bg-purple-600"
                         }`}
                     >
-                        {isFree ? "FREE" : "Locked"}
+                        {isFree ? "ACTIVE" : "ACTIVE"}
                     </span>
 
                     {category && (
@@ -212,7 +212,7 @@ const CourseCard = ({
                                 : "border border-gray-300 text-gray-700 hover:bg-gray-100"
                         }`}
                     >
-                        {enrolled ? "Continue Course" : "View Details"}
+                        {enrolled ? "Continue Course" : "Watch Course"}
                     </button>
                 </Link>
             </div>

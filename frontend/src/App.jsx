@@ -21,6 +21,13 @@ import ResetPassword from "./auth/ResetPassword";
 import ScrollToTop from "./components/ScrollToTop";
 import About from "./pages/About";
 import LessonSectionUI from "./pages/LessonSectionUI";
+import CoursesByCategory from "./pages/CoursesByCategory";
+import Categories from "./pages/Categories";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import RefundPolicy from "./pages/RefundPolicy";
+import ContactUs from "./pages/ContactUs";
+import TermsOfService from "./pages/TermsOfService";
+
 
 
 const App = () => (
@@ -35,10 +42,31 @@ const App = () => (
         {/* Login/Signup pages should redirect if already logged-in */}
         <Route path="/auth" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+  <Route path="/contact-us" element={<ContactUs />} />
+  <Route path="/refund-policy" element={<RefundPolicy />} />
+  <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/Forget-Password" element={<ForgotPassword />} />
 
         {/* Protected pages */}
-        <Route path="/courses" element={<ProtectedRoute><Courses /></ProtectedRoute>} />
+  <Route
+  path="/courses"
+  element={
+    <ProtectedRoute>
+      <Categories />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/courses/category/:category"
+  element={
+    <ProtectedRoute>
+      <Courses />
+    </ProtectedRoute>
+  }
+/>
+
         <Route path="/courses/:slug" element={<ProtectedRoute><CourseDetail /></ProtectedRoute>} />
         <Route path="/courses/:slug/lesson/:lessonId?" element={<ProtectedRoute><CoursePlayer /></ProtectedRoute>} />
         <Route path="/resources" element={<ProtectedRoute><Resources /></ProtectedRoute>} />
@@ -49,6 +77,7 @@ const App = () => (
        <Route path="/reset-password" element={<ResetPassword />} />
  <Route path="/about-doctor" element={<ProtectedRoute><About /></ProtectedRoute>} />
  <Route path="/courses/:courseId/lesson/:lessonId" element={<LessonSectionUI />} />
+ 
 
 
       </Routes>

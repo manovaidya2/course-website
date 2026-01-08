@@ -374,12 +374,12 @@ const CourseDetail = () => {
             {/* Left */}
             <div className="space-y-6">
               <div className="flex gap-2 flex-wrap">
-                <span
+                {/* <span
                   className={`px-3 py-1 rounded-full text-white text-xs ${course.access === "Free" || "Locked" ? "bg-green-600" : "bg-purple-600"
                     }`}
                 >
                   {course.access}
-                </span>
+                </span> */}
                 {course.disease && (
                   <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs">
                     {course.disease}
@@ -409,7 +409,7 @@ const CourseDetail = () => {
                 {course.access === "Free" || "Locked" ? (
                   <Link to={`/courses/${course.slug || course._id}/lesson/l1`}>
                     <button className="w-full px-6 py-3 bg-green-600 text-white rounded-lg">
-                      Start Free Course
+                      Start Course
                     </button>
                   </Link>
                 ) : (

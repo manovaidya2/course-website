@@ -1,101 +1,123 @@
 import Course from "../models/Course.js";
 import CourseStatus from "../models/CourseStatusModel.js";
-
+const diseaseIdMap = {
+  "Autism & ADHD": "autism-adhd",
+  "Teenage": "teenage",
+  "Adults": "adults",
+};
 export const createCourse = async (req, res) => {
   try {
     let {
-      moduleName, disease, type, access, courseTitle,
-      courseDescription, totalModules, totalTime,
-      youWillLearn, bottomFieldText, modules
+      moduleName,
+      disease,
+      diseaseId: finalDiseaseId,
+      type,
+      access,
+      courseTitle,
+      courseDescription,
+      totalModules,
+      totalTime,
+      youWillLearn,
+      bottomFieldText,
+      modules,
     } = req.body;
 
-    // Safe JSON parse
-    try { if (typeof modules === "string") modules = JSON.parse(modules); } 
-    catch { return res.status(400).json({ message: "Invalid modules JSON" }); }
-    try { if (typeof youWillLearn === "string") youWillLearn = JSON.parse(youWillLearn); } 
-    catch { return res.status(400).json({ message: "Invalid youWillLearn JSON" }); }
+    // SAFE PARSE
+    if (typeof modules === "string") modules = JSON.parse(modules);
+    if (typeof youWillLearn === "string")
+      youWillLearn = JSON.parse(youWillLearn);
 
-    totalModules = Number(totalModules) || 0;
-
+    // COURSE THUMBNAIL
     const thumbnail = req.files?.thumbnail?.[0]?.filename || "";
-    const lessonThumbnails = req.files?.lessonThumbnails || [];
 
-    let thumbIndex = 0;
-    const modulesData = modules.map(mod => {
-      const lessonsWithThumbs = mod.lessons.map(lesson => {
-        const thumb = lessonThumbnails[thumbIndex]?.filename || "";
-        thumbIndex++;
-        return { ...lesson, thumbnail: thumb };
-      });
-      return { ...mod, lessons: lessonsWithThumbs };
-    });
+    // LESSON THUMBNAILS (IN ORDER)
+    const lessonThumbnails = req.files?.lessonThumbnails || [];
+    let idx = 0;
+
+    const updatedModules = Array.isArray(modules)
+      ? modules.map((mod) => ({
+          ...mod,
+          lessons: Array.isArray(mod.lessons)
+            ? mod.lessons.map((lesson) => {
+                const thumb = lessonThumbnails[idx]
+                  ? lessonThumbnails[idx].filename
+                  : null;
+                idx++;
+                return {
+                  ...lesson,
+                  thumbnail: thumb,
+                };
+              })
+            : [],
+        }))
+      : [];
 
     const course = new Course({
-      moduleName, disease, type, access,
-      courseTitle, courseDescription, totalModules,
-      totalTime, youWillLearn, bottomFieldText,
-      thumbnail, modules: modulesData
+      moduleName,
+      disease,
+      diseaseId: finalDiseaseId, // ✅ FIXED
+      type,
+      access,
+      courseTitle,
+      courseDescription,
+      totalModules: Number(totalModules) || 0,
+      totalTime,
+      youWillLearn,
+      bottomFieldText,
+      thumbnail,
+      modules: updatedModules,
     });
 
     await course.save();
-    res.status(201).json(course);
 
+    res.status(201).json(course);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error", error: err.message });
+    console.error("❌ Create Course Error:", err);
+    res.status(500).json({
+      message: "Server Error",
+      error: err.message,
+    });
   }
 };
 
-// export const getCourses = async (req, res) => {
-//   try {
-//     const courses = await Course.find()
-//     // pupulate("courseSchema.modules")
-//     .lean();
-//     console.log("Fetched Courses:", courses);
-//     res.json(courses);
-//   } catch (err) {
-//     res.status(500).json({ message: "Server Error", error: err.message });
-//   }
-// };
-
+/* ---------------- GET ALL ---------------- */
 export const getCourses = async (req, res) => {
   try {
-    let courses = await Course.find().lean();
-
-    // Filter locked modules
-    courses = courses.map(course => {
-      const filteredModules = course.modules.filter(mod => !mod.isLocked);
-
-      return {
-        ...course,
-        modules: filteredModules
-      };
-    });
-
+    const courses = await Course.find().lean();
     res.json(courses);
-  } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+  } catch {
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
-
-// DELETE COURSE
-export const deleteCourse = async (req, res) => {
-  try {
-    await Course.findByIdAndDelete(req.params.id);
-    res.json({ message: "Course deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
-  }
-};
-
-// GET ONE COURSE (for edit page)
+/* ---------------- GET ONE ---------------- */
 export const getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
     res.json(course);
-  } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+  } catch {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+/* ---------------- DELETE ---------------- */
+export const deleteCourse = async (req, res) => {
+  try {
+    await Course.findByIdAndDelete(req.params.id);
+    res.json({ message: "Course deleted" });
+  } catch {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+/* ---------------- DISEASE ID WISE ---------------- */
+export const getCoursesByDiseaseId = async (req, res) => {
+  try {
+    const { diseaseId } = req.params;
+    const courses = await Course.find({ diseaseId }).lean();
+    res.json(courses);
+  } catch {
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -238,3 +260,54 @@ export const updateCourse = async (req, res) => {
   }
 };
 
+// controllers/courseController.js
+
+export const getCoursesByDisease = async (req, res) => {
+  try {
+    const { disease } = req.params;
+
+    const courses = await Course.find({ disease }).lean();
+
+    res.json(courses);
+  } catch (err) {
+    res.status(500).json({
+      message: "Server Error",
+      error: err.message,
+    });
+  }
+};
+
+
+
+
+export const getCoursesForUser = async (req, res) => {
+  try {
+    const { diseaseId } = req.params;
+    const userId = req.user.id;
+
+    const courses = await Course.find({ diseaseId }).lean();
+
+    const status = await CourseStatus.findOne({
+      userId,
+      categoryValue: diseaseId,
+      status: "Active",
+    });
+
+    const unlocked = Boolean(status);
+
+    const finalCourses = courses.map(course => ({
+      ...course,
+      modules: course.modules.map(mod => ({
+        ...mod,
+        isLocked: !unlocked, // 🔥 USER-WISE LOCK
+      })),
+    }));
+
+    res.json({
+      unlocked,
+      courses: finalCourses,
+    });
+  } catch {
+    res.status(500).json({ message: "Server error" });
+  }
+};

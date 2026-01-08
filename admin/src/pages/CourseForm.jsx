@@ -2,9 +2,17 @@ import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { Link } from "react-router-dom";
 import CourseDetailsForm from "./CourseDetailsForm ";
+const diseaseOptions = [
+  { label: "Autism & ADHD", value: "Autism & ADHD", id: "autism-adhd" },
+  { label: "Teenage", value: "Teenage", id: "teenage" },
+  { label: "Adults", value: "Adults", id: "adults" },
+];
+
 
 export default function CourseForm() {
   const [moduleName, setModuleName] = useState("");
+  const [diseaseId, setDiseaseId] = useState("");
+
   const [disease, setDisease] = useState("");
   const [courseType, setCourseType] = useState("");
   const [access, setAccess] = useState("");
@@ -52,36 +60,43 @@ export default function CourseForm() {
 
   // ---------- Submit ----------
   const handleSubmit = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("moduleName", moduleName);
-      formData.append("disease", disease);
-      formData.append("type", courseType);
-      formData.append("access", access);
-      formData.append("courseTitle", courseTitle);
-      formData.append("courseDescription", courseDescription);
-      formData.append("totalModules", totalModules);
-      formData.append("totalTime", totalTime);
-      formData.append("bottomFieldText", bottomFieldText);
-      if (courseThumbnail) formData.append("thumbnail", courseThumbnail);
-      formData.append("youWillLearn", JSON.stringify(youWillLearn));
-      formData.append("modules", JSON.stringify(modules));
+  try {
+    const formData = new FormData();
 
-      // Append all lesson thumbnails in order
-      modules.forEach((mod) =>
-        mod.lessons.forEach((lesson) => {
-          if (lesson.thumbnail) formData.append("lessonThumbnails", lesson.thumbnail);
-        })
-      );
+    formData.append("moduleName", moduleName);
+    formData.append("disease", disease);          // ✅ REQUIRED
+    formData.append("diseaseId", diseaseId);      // ✅ REQUIRED
+    formData.append("type", courseType);
+    formData.append("access", access);
+    formData.append("courseTitle", courseTitle);
+    formData.append("courseDescription", courseDescription);
+    formData.append("totalModules", totalModules);
+    formData.append("totalTime", totalTime);
+    formData.append("bottomFieldText", bottomFieldText);
 
-      const res = await axiosInstance.post("/admin/courses", formData);
-      alert("Course created successfully!");
-      console.log(res.data);
-    } catch (err) {
-      console.error(err);
-      alert("Error creating course!");
+    if (courseThumbnail) {
+      formData.append("thumbnail", courseThumbnail);
     }
-  };
+
+    formData.append("youWillLearn", JSON.stringify(youWillLearn));
+    formData.append("modules", JSON.stringify(modules));
+
+    modules.forEach((mod) =>
+      mod.lessons.forEach((lesson) => {
+        if (lesson.thumbnail) {
+          formData.append("lessonThumbnails", lesson.thumbnail);
+        }
+      })
+    );
+
+    await axiosInstance.post("admin/courses", formData);
+
+    alert("✅ Course created successfully!");
+  } catch (err) {
+    console.error(err);
+    alert("❌ Error creating course");
+  }
+};
 
   return (
     <div className="p-6 space-y-6">
@@ -89,9 +104,30 @@ export default function CourseForm() {
       <div className="border p-4 rounded space-y-4">
         
         <h2 className="font-semibold text-lg">Module Info</h2>
-        <input placeholder="Module Name" value={moduleName} onChange={(e) => setModuleName(e.target.value)} className="border p-2 w-full rounded" />
+    <select
+  value={disease}
+  onChange={(e) => {
+    const selected = diseaseOptions.find(
+      (d) => d.value === e.target.value
+    );
+    setDisease(e.target.value);
+    setDiseaseId(selected.id);
+  }}
+  className="border p-2 rounded w-1/2"
+  required
+>
+  <option value="">Select Category</option>
+  {diseaseOptions.map((d) => (
+    <option key={d.id} value={d.value}>
+      {d.label}
+    </option>
+  ))}
+</select>
+
+
+
         <div className="flex gap-2">
-          <input placeholder="Disease" value={disease} onChange={(e) => setDisease(e.target.value)} className="border p-2 rounded w-1/2" />
+          {/* <input placeholder="Disease" value={disease} onChange={(e) => setDisease(e.target.value)} className="border p-2 rounded w-1/2" /> */}
           <select value={courseType} onChange={(e) => setCourseType(e.target.value)} className="border p-2 rounded w-1/2">
             <option value="">Select Type</option>
             <option value="Intro">Intro</option>

@@ -6,9 +6,36 @@ import { FiArrowRight, FiMessageSquare } from "react-icons/fi";
 import { TfiQuoteLeft } from "react-icons/tfi";
 import { courses, experts, testimonials } from "../lib/dummyData";
 import FeaturedCoursesSection from "./FeaturedCoursesSection";
+import Categories from "./Categories";
+import sirImage from "../image/sirimage.jpg";
+import mamImage from "../image/mamimg.webp";
 
 const Home = () => {
     const featuredCourses = courses.slice(0, 3);
+const experts = [
+  {
+    id: 1,
+    name: "Dr. Ankush Garg",
+    designation: "Child Psychologist",
+    image: sirImage,
+    expertise: [
+      "Autism & ADHD support",
+      "Behavioral therapy guidance",
+      "Parent counseling",
+    ],
+  },
+  {
+    id: 2,
+    name: "Dr. Pragya  Goel",
+    designation: "Developmental Specialist",
+    image: mamImage,
+    expertise: [
+      "Learning difficulties",
+      "Emotional development",
+      "Customized learning plans",
+    ],
+  },
+];
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -16,7 +43,7 @@ const Home = () => {
                 <HeroSection />
                 <HowItWorksSection />
                 {/* Featured Courses */}
-              <FeaturedCoursesSection />
+              <Categories />
 
 
                 {/* Community Highlight */}
@@ -81,46 +108,53 @@ const Home = () => {
                 </section>
 
                 {/* About Experts */}
-                <section className="py-20">
-                    <div className="container mx-auto px-4">
+               <section className="py-20">
+      <div className="container mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Meet Your Guides</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Doctors who truly understand your challenges
+          </p>
+        </div>
 
-                        <div className="text-center mb-12">
-                            <h2 className="text-4xl md:text-5xl font-bold mb-4">Meet Your Guides</h2>
-                            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                                Doctors who truly understand your challenges
-                            </p>
-                        </div>
+        {/* Experts Grid */}
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {experts.map((expert) => (
+            <div key={expert.id} className="p-8 rounded-xl shadow bg-white">
+              <div className="flex flex-col items-center text-center space-y-4">
 
-                        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                            {experts.map((expert, index) => (
-                                <div key={expert.id} className="p-8 rounded-xl shadow bg-white">
-                                    <div className="flex flex-col items-center text-center space-y-4">
+                {/* Expert Image */}
+                <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200">
+                  <img
+                    src={expert.image}
+                    alt={expert.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-                                        <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200">
-                                            <img src={expert.image} className="w-full h-full object-cover" />
-                                        </div>
+                {/* Name & Designation */}
+                <div>
+                  <h3 className="text-2xl font-bold">{expert.name}</h3>
+                  <p className="text-gray-500">{expert.designation}</p>
+                </div>
 
-                                        <div>
-                                            <h3 className="text-2xl font-bold">{expert.name}</h3>
-                                            <p className="text-gray-500">{expert.designation}</p>
-                                        </div>
+                {/* Expertise List */}
+                <ul className="space-y-2 text-sm text-left w-full">
+                  {expert.expertise.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-indigo-600 mt-1">✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
 
-                                        <ul className="space-y-2 text-sm text-left w-full">
-                                            {expert.expertise.map((item, i) => (
-                                                <li key={i} className="flex items-start gap-2">
-                                                    <span className="text-indigo-600 mt-1">✓</span>
-                                                    {item}
-                                                </li>
-                                            ))}
-                                        </ul>
-
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                    </div>
-                </section>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
 
                 {/* Testimonials */}
                 <section className="py-20 bg-gray-100">

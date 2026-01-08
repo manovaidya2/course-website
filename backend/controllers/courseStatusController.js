@@ -22,23 +22,10 @@ export const updateCourseStatus = async (req, res) => {
     let updatedCourse = null;
 
     // ---------- PURCHASED ----------
-    if (status === "Purchased") {
-      // Unlock all modules
-      updatedCourse = await Course.updateMany(
-        {},
-        { $set: { "modules.$[].isLocked": false } }
-      );
-    }
+ 
 
     // ---------- PENDING ----------
-    if (status === "Pending") {
-      // Lock all modules
-      updatedCourse = await Course.updateMany(
-        {},
-        { $set: { "modules.$[].isLocked": true } }
-      );
-    }
-
+  
     // ---------- UPDATE USER COURSE STATUS ----------
     const updatedStatus = await CourseStatus.findOneAndUpdate(
       { userId },

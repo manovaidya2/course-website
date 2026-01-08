@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  // baseURL: "http://localhost:5000/api/admin", // ← YOUR BACKEND URL
-  baseURL: "https://apicourse.manovaidya.com/api/admin",
+  baseURL: "http://localhost:5005/api/admin", // ← YOUR BACKEND URL
+  // baseURL: "https://apicourse.manovaidya.com/api/admin",
 });
 
 // FormData handling
