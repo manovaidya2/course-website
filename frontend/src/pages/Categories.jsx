@@ -47,7 +47,7 @@ const Categories = () => {
     const fetchUserCourses = async () => {
       if (!token) return;
       const res = await fetch(
-        "http://localhost:5005/api/admin/course-status/me",
+        "https://apicourse.manovaidya.com/api/admin/course-status/me",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -66,7 +66,7 @@ const Categories = () => {
     if (!razorpayLoaded) return alert("Razorpay not loaded");
 
     const res = await fetch(
-      "http://localhost:5005/api/payment/create-order",
+      "https://apicourse.manovaidya.com/api/payment/create-order",
       {
         method: "POST",
         headers: {
@@ -88,7 +88,7 @@ const Categories = () => {
       order_id: order.id,
       handler: async (response) => {
         const verify = await fetch(
-          "http://localhost:5005/api/payment/verify-payment",
+          "https://apicourse.manovaidya.com/api/payment/verify-payment",
           {
             method: "POST",
             headers: {

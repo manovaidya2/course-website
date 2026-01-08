@@ -218,7 +218,7 @@ const Courses = () => {
 
       try {
         const res = await fetch(
-          "http://localhost:5005/api/admin/course-status/me",
+          "https://apicourse.manovaidya.com/api/admin/course-status/me",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
