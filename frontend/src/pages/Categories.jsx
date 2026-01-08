@@ -62,57 +62,69 @@ const Categories = () => {
     );
 
   // Payment
-  const handlePayment = async (category) => {
-    if (!razorpayLoaded) return alert("Razorpay not loaded");
+const handlePayment = async (category) => {
+  if (!token) {
+    alert("Please login to continue");
+    navigate("/login", {
+      state: { redirectTo: "/courses" },
+    });
+    return;
+  }
 
-    const res = await fetch(
-      "https://apicourse.manovaidya.com/api/payment/create-order",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ categoryValue: category.value }),
-      }
-    );
+  if (!razorpayLoaded) {
+    alert("Payment system loading, please wait...");
+    return;
+  }
 
-    const order = await res.json();
-
-    new window.Razorpay({
-      key: "rzp_test_RQ69noRiymN9fD",
-      amount: order.amount,
-      currency: order.currency,
-      name: "Manovaidya",
-      description: `Payment for ${category.title}`,
-      order_id: order.id,
-      handler: async (response) => {
-        const verify = await fetch(
-          "https://apicourse.manovaidya.com/api/payment/verify-payment",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              categoryValue: category.value,
-            }),
-          }
-        );
-
-        if (verify.ok) {
-          navigate(`/courses/category/${category.value}`);
-        } else {
-          alert("Payment failed");
-        }
+  const res = await fetch(
+    "https://apicourse.manovaidya.com/api/payment/create-order",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      theme: { color: "#4f46e5" },
-    }).open();
-  };
+      body: JSON.stringify({ categoryValue: category.value }),
+    }
+  );
+
+  const order = await res.json();
+
+  new window.Razorpay({
+    key: "rzp_test_RQ69noRiymN9fD",
+    amount: order.amount,
+    currency: order.currency,
+    name: "Manovaidya",
+    description: `Payment for ${category.title}`,
+    order_id: order.id,
+    handler: async (response) => {
+      const verify = await fetch(
+        "https://apicourse.manovaidya.com/api/payment/verify-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            categoryValue: category.value,
+          }),
+        }
+      );
+
+      if (verify.ok) {
+        navigate(`/courses/category/${category.value}`);
+      } else {
+        alert("Payment failed");
+      }
+    },
+    theme: { color: "#4f46e5" },
+  }).open();
+};
+
 
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white py-10">
@@ -127,12 +139,22 @@ const Categories = () => {
           return (
             <div
               key={cat.value}
-              onClick={() => {
-                if (cat.comingSoon) return;
-                unlocked
-                  ? navigate(`/courses/category/${cat.value}`)
-                  : handlePayment(cat);
-              }}
+             onClick={() => {
+  if (cat.comingSoon) return;
+
+  if (!token && !unlocked) {
+    alert("Please login to access courses");
+    navigate("/Auth", {
+      state: { redirectTo: "/courses" },
+    });
+    return;
+  }
+
+  unlocked
+    ? navigate(`/courses/category/${cat.value}`)
+    : handlePayment(cat);
+}}
+
               className={`relative overflow-hidden rounded-2xl border transition-all
                 ${
                   cat.comingSoon
