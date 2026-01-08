@@ -21,7 +21,7 @@ import ResetPassword from "./auth/ResetPassword";
 import ScrollToTop from "./components/ScrollToTop";
 import About from "./pages/About";
 import LessonSectionUI from "./pages/LessonSectionUI";
-import CoursesByCategory from "./pages/CoursesByCategory";
+
 import Categories from "./pages/Categories";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
