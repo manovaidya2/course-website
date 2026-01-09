@@ -4,34 +4,46 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { sendEmail } from "../utils/email.js";
 import CourseStatus from "../models/CourseStatusModel.js";
+
+
+
 export const signup = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
 
     const exist = await User.findOne({ email });
-    if (exist) return res.status(400).json({ message: "Email already in use" });
+    if (exist)
+      return res.status(400).json({ message: "Email already exists" });
 
-    const hashed = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       name,
       email,
       phone,
-      password: hashed,
-    });
-  
-    await CourseStatus.create({
-      userId: user._id,
-      // courseId: DEFAULT_COURSE_ID,
-      status: "Pending"
+      password: hash,
     });
 
+    // ✅ CREATE 3 COURSE STATUS
+    const categories = ["autism-adhd", "teenage", "adults"];
+
+    await CourseStatus.insertMany(
+      categories.map((c) => ({
+        userId: user._id,
+        categoryValue: c,
+        status: "Pending",
+        paymentMethod: "Manual",
+      }))
+    );
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
     res.json({ token });
-  } catch {
+  } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 export const login = async (req, res) => {
   try {

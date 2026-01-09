@@ -1,174 +1,84 @@
 import { useEffect, useState } from "react";
 import axios from "../utils/axiosInstance";
 
-const statusColors = {
-  Purchased: "bg-green-100 text-green-800",
-  Pending: "bg-yellow-100 text-yellow-800",
-  "Not Done": "bg-red-100 text-red-800",
-};
+const categories = [
+  { label: "Autism", value: "autism-adhd" },
+  { label: "Teenage", value: "teenage" },
+  { label: "Adults", value: "adults" },
+];
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // Fetch users + course status
-  useEffect(() => {
-    axios
-      .get("/admin/course-status", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const handleStatusChange = (userId, newStatus) => {
-    axios
-      .post(
-        "/admin/course-status/update",
-        { userId, status: newStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then(() => {
-        setUsers((prev) =>
-          prev.map((u) =>
-            u.userId && u.userId._id === userId
-              ? { ...u, status: newStatus }
-              : u
-          )
-        );
-      })
-      .catch((err) => console.error(err));
+  const loadUsers = async () => {
+    const res = await axios.get("/admin/course-status/admin/users");
+    setUsers(res.data);
   };
 
-  if (loading) {
-    return (
-      <p className="p-6 text-center text-lg text-gray-600">
-        Loading users...
-      </p>
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const toggle = async (userId, categoryValue, checked) => {
+    await axios.post("/admin/course-status/admin/toggle", {
+      userId,
+      categoryValue,
+      active: checked,
+    });
+
+    setUsers((prev) =>
+      prev.map((u) =>
+        u._id === userId
+          ? {
+              ...u,
+              courses: {
+                ...u.courses,
+                [categoryValue]: checked,
+              },
+            }
+          : u
+      )
     );
-  }
+  };
 
   return (
-    <div className="p-4 md:p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
-        All Registered Users
-      </h1>
+    <div className="p-8 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6">Admin – Course Access</h1>
 
-      {/* ================= TABLE VIEW ================= */}
-      <div className="hidden md:block overflow-x-auto shadow-lg rounded-lg bg-white">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                Email
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                Phone
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                Course Status
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                Created At
-              </th>
+      <table className="w-full bg-white shadow rounded">
+        <thead className="bg-gray-50">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            {categories.map((c) => (
+              <th key={c.value}>{c.label}</th>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody>
+          {users.map((u) => (
+            <tr key={u._id} className="border-t text-center">
+              <td>{u.name}</td>
+              <td>{u.email}</td>
+              <td>{u.phone}</td>
+
+              {categories.map((c) => (
+                <td key={c.value}>
+                  <input
+                    type="checkbox"
+                    checked={u.courses[c.value]}
+                    onChange={(e) =>
+                      toggle(u._id, c.value, e.target.checked)
+                    }
+                  />
+                </td>
+              ))}
             </tr>
-          </thead>
-
-          <tbody className="divide-y divide-gray-200">
-            {users.map((u) => {
-              // 🔴 USER DELETED FROM MONGODB
-              if (!u.userId) return null;
-
-              return (
-                <tr
-                  key={u._id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-4 py-3 font-medium text-gray-700">
-                    {u.userId.name}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">
-                    {u.userId.email}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">
-                    {u.userId.phone}
-                  </td>
-                  <td className="px-4 py-3">
-                    <select
-                      value={u.status || "Pending"}
-                      onChange={(e) =>
-                        handleStatusChange(u.userId._id, e.target.value)
-                      }
-                      className={`border rounded px-2 py-1 font-semibold ${
-                        statusColors[u.status || "Pending"]
-                      }`}
-                    >
-                      <option value="Purchased">Purchased</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Not Done">Not Done</option>
-                    </select>
-                  </td>
-                  <td className="px-4 py-3 text-gray-500 text-sm">
-                    {new Date(u.userId.createdAt).toLocaleString()}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* ================= MOBILE VIEW ================= */}
-      <div className="md:hidden mt-6 space-y-4">
-        {users.map((u) => {
-          if (!u.userId) return null;
-
-          return (
-            <div
-              key={u._id}
-              className="bg-white shadow rounded-lg p-4 space-y-2"
-            >
-              <p className="text-gray-700 font-semibold">
-                {u.userId.name}
-              </p>
-              <p className="text-gray-500 text-sm">
-                {u.userId.email}
-              </p>
-              <p className="text-gray-500 text-sm">
-                {u.userId.phone}
-              </p>
-
-              <select
-                value={u.status || "Pending"}
-                onChange={(e) =>
-                  handleStatusChange(u.userId._id, e.target.value)
-                }
-                className={`border rounded px-2 py-1 font-semibold ${
-                  statusColors[u.status || "Pending"]
-                }`}
-              >
-                <option value="Purchased">Purchased</option>
-                <option value="Pending">Pending</option>
-                <option value="Not Done">Not Done</option>
-              </select>
-
-              <p className="text-gray-400 text-xs">
-                {new Date(u.userId.createdAt).toLocaleString()}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

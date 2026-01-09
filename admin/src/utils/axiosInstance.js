@@ -1,15 +1,13 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  // baseURL: "http://localhost:5000/api/admin", // ← YOUR BACKEND URL
-  baseURL: "https://apicourse.manovaidya.com/api/",
+  // baseURL: "http://localhost:5005/api",
+   baseURL: "https://apicourse.manovaidya.com/api",
 });
 
-// FormData handling
 axiosInstance.interceptors.request.use((config) => {
-  if (config.data instanceof FormData) {
-    config.headers["Content-Type"] = "multipart/form-data";
-  }
+  const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 

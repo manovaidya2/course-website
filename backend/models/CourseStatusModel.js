@@ -21,8 +21,23 @@ const courseStatusSchema = new mongoose.Schema(
     },
 
     paymentId: String,
+
+    paymentMethod: {
+      type: String,
+      enum: ["Razorpay", "Manual"],
+      default: "Razorpay",
+    },
+
+    paymentScreenshot: {
+      type: String, // image path
+    },
   },
   { timestamps: true }
+  
+);
+courseStatusSchema.index(
+  { userId: 1, categoryValue: 1 },
+  { unique: true }
 );
 
 export default mongoose.model("CourseStatus", courseStatusSchema);
