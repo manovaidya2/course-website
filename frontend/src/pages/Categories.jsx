@@ -91,7 +91,7 @@ const handlePayment = async (category) => {
   const order = await res.json();
 
   new window.Razorpay({
-    key: "rzp_test_RQ69noRiymN9fD",
+    key: "rzp_live_S1nXyJZCdeJIP8",
     amount: order.amount,
     currency: order.currency,
     name: "Manovaidya",
