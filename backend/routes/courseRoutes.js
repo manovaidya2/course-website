@@ -6,6 +6,7 @@ import {
   deleteCourse,
   getCoursesByDiseaseId,
   getCoursesForUser ,
+    updateCourse,
 } from "../controllers/courseController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -40,4 +41,13 @@ router.get(
   protect,
   getCoursesForUser
 );
+router.put(
+  "/:id",
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "lessonThumbnails", maxCount: 100 },
+  ]),
+  updateCourse
+);
+
 export default router;

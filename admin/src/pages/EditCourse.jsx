@@ -338,6 +338,16 @@
                     }}
                     className="w-full p-2 mt-2 border rounded"
                   />
+<input
+  value={lesson.duration}
+  placeholder="Duration (e.g. 10:30)"
+  onChange={(e) => {
+    const updated = [...course.modules];
+    updated[modIndex].lessons[lessonIndex].duration = e.target.value;
+    setCourse((prev) => ({ ...prev, modules: updated }));
+  }}
+  className="w-full p-2 mt-2 border rounded"
+/>
 
                   <input
                     value={lesson.youtubeUrl}
@@ -434,3 +444,4 @@
   };
 
   export default EditCourse;
+

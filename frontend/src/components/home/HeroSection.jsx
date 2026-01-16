@@ -115,7 +115,7 @@ const HeroSection = () => {
               <div className="absolute -bottom-6 left-6 right-6 bg-white p-4 rounded-xl shadow-card border">
                 <p className="text-sm font-medium text-center">
                   Trusted by{" "}
-                  <span className="text-indigo-600 font-semibold">500+</span>{" "}
+                  <span className="text-indigo-600 font-semibold">1000+</span>{" "}
                   Indian parents
                 </p>
               </div>
