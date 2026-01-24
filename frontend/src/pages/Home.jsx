@@ -16,26 +16,29 @@ const experts = [
   {
     id: 1,
     name: "Dr. Ankush Garg",
-    designation: "Child Psychologist",
+    designation: "Ayurvedic Neurologist & Mental Health Expert",
     image: sirImage,
     expertise: [
-      "Autism & ADHD support",
-      "Behavioral therapy guidance",
-      "Parent counseling",
+      "Reversing Stress & Autism through Neuro-Ayurveda",
+      "Ayurvedic Neurologist & Mental Health Expert",
+      "Autism, ADHD & Neurological Care with Ayurveda",
+      "Founder – Manovaidya Neuro-Ayurveda Clinic",
     ],
   },
   {
     id: 2,
-    name: "Dr. Pragya  Goel",
-    designation: "Developmental Specialist",
+    name: "Dr. Pragya Goel",
+    designation: "Developmental & Child Wellness Specialist",
     image: mamImage,
     expertise: [
-      "Learning difficulties",
-      "Emotional development",
-      "Customized learning plans",
+      "Child Development & Early Intervention",
+      "Learning & Behavioral Challenges Support",
+      "Emotional & Social Development Guidance",
+      "Individualized Therapy & Parent Counseling",
     ],
   },
 ];
+
 
     return (
         <div className="min-h-screen flex flex-col">

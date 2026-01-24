@@ -114,7 +114,7 @@ const Profile = () => {
                         </div>
 
                         {/* Child Profiles */}
-                        <div className="p-6 bg-white rounded-xl shadow">
+                        {/* <div className="p-6 bg-white rounded-xl shadow">
                             <div className="flex items-center justify-between mb-6">
                                 <div className="flex items-center gap-3">
                                     <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
@@ -163,7 +163,7 @@ const Profile = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Communication */}
                         <div className="p-6 bg-white rounded-xl shadow">
